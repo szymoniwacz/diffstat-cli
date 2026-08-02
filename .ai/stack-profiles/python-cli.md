@@ -18,6 +18,8 @@ python -m pip install -e ".[dev]"
 pytest
 ruff check src tests
 diffstat --help
+diffstat analyze --help
+diffstat analyze --json
 ```
 
 Optional when mypy is installed:

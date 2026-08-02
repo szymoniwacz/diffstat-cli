@@ -26,6 +26,10 @@ formats text or JSON reports.
 
 ## Open questions
 
-- Exact sensitive-path heuristic list (define during MVP implementation goal)
-- Whether to use `git` subprocess only vs. a thin library wrapper (prefer
-  subprocess for minimal deps unless library clearly wins)
+- None blocking MVP after Phase 2 core CLI
+
+## Resolved during Phase 2
+
+- Sensitive-path heuristics: documented in README (substring/suffix list)
+- Git access: `git` subprocess only (no extra runtime dependency)
+
