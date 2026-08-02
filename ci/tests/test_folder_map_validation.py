@@ -34,6 +34,13 @@ def bootstrap_template(root: Path) -> None:
     shutil.copytree(ROOT / ".ai", root / ".ai", dirs_exist_ok=True)
     shutil.copytree(ROOT / "examples", root / "examples", dirs_exist_ok=True)
     shutil.copytree(ROOT / "ci", root / "ci", dirs_exist_ok=True)
+    artifact_ignore = shutil.ignore_patterns("__pycache__", "*.pyc", "*.egg-info")
+    if (ROOT / "src").is_dir():
+        shutil.copytree(ROOT / "src", root / "src", dirs_exist_ok=True, ignore=artifact_ignore)
+    if (ROOT / "tests").is_dir():
+        shutil.copytree(ROOT / "tests", root / "tests", dirs_exist_ok=True, ignore=artifact_ignore)
+    if (ROOT / "pyproject.toml").is_file():
+        shutil.copy(ROOT / "pyproject.toml", root / "pyproject.toml")
     for rel in (
         ".github/workflows/validate-workflow-contracts.yml",
         ".github/PULL_REQUEST_TEMPLATE/template-maintenance.md",
