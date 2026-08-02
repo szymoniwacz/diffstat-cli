@@ -8,7 +8,7 @@ diffstat-cli.
 ## In scope now
 
 - Bootstrap and project readiness (completed via goal #2)
-- Local git diff analysis CLI (`diffstat` command)
+- Local git diff analysis CLI (`diffstat analyze`) — Phase 2 core
 - Human-readable summary and JSON report output
 - Review-risk scoring from churn, file count, and sensitive-path heuristics
 - Error handling for invalid repos, ranges, and empty diffs

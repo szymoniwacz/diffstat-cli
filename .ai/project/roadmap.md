@@ -23,9 +23,11 @@ Goal:
 Ship installable `diffstat` with analyze, text summary, and JSON output for
 local git diffs.
 
+Status: implemented (goal #4)
+
 Outputs:
 
-- `diffstat analyze` (or equivalent) for working tree and commit ranges
+- `diffstat analyze` for working tree and commit ranges
 - Human-readable summary (totals, per-file churn, hotspots)
 - JSON report with stable ordering
 - Review-risk score or ranking (documented heuristics)
