@@ -12,6 +12,13 @@ The goal is memory.
 
 ## Decision log
 
+### 2026-08-02 — Python CLI stack for diffstat-cli
+
+**Decision:** Use Python 3.11+ with `src/diffstat/` layout, `pytest` and `ruff`
+for quality, and local `git` for diff input. Minimal dependencies for MVP.
+
+**Kept:** local-first analysis, deterministic output, scriptable CLI contracts.
+
 ### 2026-08-01 — Self-correcting `auto-merge` option
 
 **Decision:** Squash merge by Goal Executor requires an explicit

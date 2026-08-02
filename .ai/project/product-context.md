@@ -1,55 +1,41 @@
 # Product Context
 
-## Purpose
-
-This is the main context file for AI-assisted work in this repository.
-
-Before planning or changing anything, an AI assistant should read this file.
-
 ## Project identity
 
-> REPLACE DURING BOOTSTRAP: describe the specific project created from this template.
-
-Include:
-
-- project name
-- project type
-- target user
-- core problem
-- current phase
-- important constraints
+- **Project name:** diffstat-cli
+- **Project type:** local-first CLI for git diff statistics and review signals
+- **Target users:** developers sizing PRs; reviewers prioritizing work; CI jobs
+  gating oversized diffs
+- **Core problem:** change sets are hard to judge quickly without structured
+  churn and risk metrics
+- **Current phase:** MVP implementation (bootstrap complete; first product goals
+  follow)
+- **Important constraints:** offline core analysis, deterministic output,
+  scriptable UX, minimal dependencies
 
 ## Current phase
 
-Choose one:
-
-- planning only
-- documentation first
-- prototype
-- MVP implementation
-- hardening
-- maintenance
+MVP implementation
 
 ## Working assumptions
 
-List assumptions that should guide all future work.
-
-Examples:
-
-- documentation comes before implementation
-- changes should be small and reviewable
-- AI output must be reviewed by a human
-- generated code must follow existing conventions
+- Documentation and project readiness precede product features
+- Changes stay small and reviewable (one goal per PR)
+- Core analysis uses local `git` only; no network for MVP
+- Python 3.11+ with minimal dependencies
+- Human or authorized auto-merge after review per repository policy
 
 ## Out of scope
 
-List what should not be done yet.
-
-This helps prevent AI tools from jumping too far ahead.
+- GitHub/GitLab remote PR fetch by number
+- Web UI, desktop app, hosted backends
+- Auth, multi-tenant storage, LLM features
+- Rewriting the AI workflow template beyond bootstrap customization
 
 ## Links to important files
 
 - `.ai/project/scope.md`
 - `.ai/project/roadmap.md`
 - `.ai/project/decisions.md`
-- `.ai/conventions/ai-working-mode.md`
+- `.ai/docs/project-requirements.md`
+- `.ai/docs/architecture-direction.md`

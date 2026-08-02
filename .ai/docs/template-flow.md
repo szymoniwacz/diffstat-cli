@@ -266,6 +266,9 @@ keeping incomplete copies.
 | `.cursor/rules/` | Cursor adapter rules |
 | `examples/` | Process-focused workflow examples |
 | `ci/` | Workflow contract validation and fixture tests |
+| `src/` | Python package source (`diffstat`) |
+| `tests/` | Python tests |
+| `pyproject.toml` | Python packaging and tool configuration |
 
 ### `.ai/` working system
 

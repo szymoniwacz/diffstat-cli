@@ -1,123 +1,78 @@
-# AI Project Template
+# diffstat-cli
 
-A documentation-first GitHub template for building software with explicit
-context, scoped changes, and human-controlled review.
+Local-first command-line tool for git diff churn statistics and review-risk
+signals.
 
-Use this repository as a starting point, then replace template content with
-your product documentation during bootstrap.
+## Purpose
 
-## Start here
+Help developers and reviewers quickly judge whether a local git change set is
+large or risky before reading every line. Suitable for interactive use and CI
+pipelines that need deterministic JSON output.
 
-Read [`.ai/docs/template-flow.md`](.ai/docs/template-flow.md) for the full
-working guide and [canonical folder map](.ai/docs/template-flow.md#complete-folder-map).
+## Status
 
-## Who this is for
+Bootstrap complete; MVP implementation in progress (see `.ai/project/roadmap.md`).
 
-- developers starting a new product with assisted implementation
-- teams that want project context, scope, and review rules in files instead of chat
-- repositories that use AGENTS, Claude Code, Copilot, or Cursor adapters
+## Current capabilities
 
-## Core principle
+- Installable Python package scaffold (`diffstat` entry point with `--help`)
+- Project documentation and CI contract validation in project mode
+- Product behavior (analyze, summary, JSON) not yet implemented
 
-```txt
-Template defines the working system.
-Project defines the product.
+## Setup
+
+Requires Python 3.11+ and git on PATH.
+
+```bash
+python -m pip install -e ".[dev]"
 ```
 
-## Default operating model
+## Run
 
-Prefer `/execute-goal` for one meaningful outcome. Agents never merge except
-under authorized eligible `self-correcting-review auto-merge`.
-
-Canonical rules:
-
-- [`.ai/policies/autonomy-and-authorization.md`](.ai/policies/autonomy-and-authorization.md)
-- Full lifecycle: [`.ai/docs/full-workflow.md`](.ai/docs/full-workflow.md)
-
-## Define the project
-
-Choose exactly one mode:
-
-| Mode | Use when |
-|---|---|
-| `/project-intake` | You want guided questions in short rounds |
-| `/define-project` | You already have a rough description to organize |
-
-Both modes produce the same project context, requirements, and decision-status
-table. See [`.ai/contracts/project-definition-contract.md`](.ai/contracts/project-definition-contract.md).
-
-## Bootstrap flow
-
-```txt
-create repo
-  -> choose intake mode
-  -> complete definition coverage
-  -> customize template for the product
-  -> pass project readiness gate
-  -> start first product task
+```bash
+diffstat --help
 ```
 
-Project readiness means no blockers remain, stack and real commands are
-recorded, bootstrap markers are removed, and repository identity describes the
-product. See [`.ai/onboarding/bootstrap-checklist.md`](.ai/onboarding/bootstrap-checklist.md).
+Analyze commands ship in the MVP phase (see roadmap Phase 2).
 
-## Feature and task flow
+## Tests and quality
 
-Prefer `/execute-goal` for one scoped outcome. Full lifecycle order:
-[`.ai/docs/full-workflow.md`](.ai/docs/full-workflow.md). Autonomy and question
-timing: [`.ai/policies/autonomy-and-authorization.md`](.ai/policies/autonomy-and-authorization.md).
+```bash
+pytest
+ruff check src tests
+```
 
-Independent review is preferred; self-review is the fallback. Agents never merge
-except under authorized eligible `self-correcting-review auto-merge`.
+Optional type checking when configured:
 
-## Task routes
+```bash
+mypy src
+```
 
-| Task type | Primary workflow | Required preparation |
-|---|---|---|
-| Feature | [`.ai/workflows/feature.md`](.ai/workflows/feature.md) | Task packet and plan |
-| Bugfix | [`.ai/workflows/bugfix.md`](.ai/workflows/bugfix.md) | Task packet and plan |
-| Refactor | [`.ai/workflows/refactor.md`](.ai/workflows/refactor.md) | Task packet and plan; approval when high-risk or architectural |
-| Tests | [`.ai/workflows/test-writing.md`](.ai/workflows/test-writing.md) | Brief or packet; plan when required |
-| Documentation | [`.ai/workflows/documentation-update.md`](.ai/workflows/documentation-update.md) | Brief or packet; plan when required |
+## Configuration and environment variables
 
-Preparation rules: [`.ai/quality/definition-of-ready.md`](.ai/quality/definition-of-ready.md)
+No environment variables required for bootstrap. MVP may add optional flags only.
 
-## Supported adapters
+## Architecture and context
 
-| Adapter | Location |
-|---|---|
-| Root agents | [`AGENTS.md`](AGENTS.md) |
-| Claude Code | [`CLAUDE.md`](CLAUDE.md) |
-| GitHub Copilot | [`.github/copilot-instructions.md`](.github/copilot-instructions.md) |
-| Cursor | [`.cursor/rules/`](.cursor/rules/) |
+- `.ai/project/product-context.md`
+- `.ai/project/scope.md`
+- `.ai/docs/architecture-direction.md`
 
-Canonical workflow lives in [`.ai/`](.ai/). Adapters stay thin.
+## Working system
 
-## Review and control boundaries
+This repository uses `.ai/` as its working system. See `.ai/docs/template-flow.md`
+for contributor workflow. This README stays product-focused.
 
-- meaningful work gets self-review and a review handoff
-- human review is required before merge when using the GitHub PR workflow,
-  unless self-correcting review mode is authorized and eligible
-- controlled or high-risk actions require explicit human approval first
-- agents create branches and PRs; humans merge by default; Goal Executor may
-  squash-merge under authorized eligible `self-correcting-review auto-merge`
+## Limitations
 
-## After bootstrap
-
-Replace this README with product-facing documentation. Use
-[`.ai/templates/project-readme.md`](.ai/templates/project-readme.md) as the
-starting point for setup, run, tests, configuration, limitations, and license.
-
-## Where details live
-
-| Topic | Document |
-|---|---|
-| AI working system and canonical AI entrypoint | [`.ai/README.md`](.ai/README.md) |
-| Goal Executor production setup | [`.ai/automation/goal-executor-production-setup.md`](.ai/automation/goal-executor-production-setup.md) |
-| Bootstrap checklist | [`.ai/onboarding/bootstrap-checklist.md`](.ai/onboarding/bootstrap-checklist.md) |
-| Root README contract | [`.ai/contracts/readme-contract.md`](.ai/contracts/readme-contract.md) |
+- No remote git platform integration in MVP
+- Core analysis not yet implemented (bootstrap scaffold only)
+- Large-repo performance not yet optimized
 
 ## License
 
-See [`LICENSE`](LICENSE). Confirm license and ownership for your project during
-bootstrap.
+MIT — see `LICENSE` (Copyright Szymon Iwacz).
+
+## Contact and contributions
+
+Maintainer: Szymon Iwacz. Open issues or PRs on GitHub.

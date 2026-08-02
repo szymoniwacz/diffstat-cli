@@ -1,42 +1,25 @@
 # Project Vision
 
-> REPLACE DURING BOOTSTRAP: replace this template with the project's actual vision.
+## One-sentence vision
 
-## Purpose
+diffstat-cli is a local-first command-line tool for developers and reviewers that
+helps size git change sets and spot review-risk signals before reading every line.
 
-Describe what the project is meant to become.
+## Problem
 
-This file should answer:
+Pull requests and local commits vary widely in size and risk. Reviewers waste
+time opening large or sensitive diffs without a quick signal. CI jobs lack a
+simple, deterministic way to warn or fail on oversized changes.
 
-- what problem the project solves
-- who it is for
-- what kind of system it should become
-- why it is worth building
+## Desired outcome
 
-## Template guidance
+After diffstat-cli exists, a contributor can point the CLI at a local git
+repository and immediately see churn totals, per-file breakdowns, hotspots, and
+a documented review-risk ranking — in human text or machine JSON — without
+network access.
 
-Keep the vision short.
+## Non-goals
 
-A good project vision should fit on one screen.
-
-Avoid hype.
-Avoid vague ambition.
-Avoid implementation details.
-
-## Recommended structure
-
-### One-sentence vision
-
-`[Project name] is a [type of system] for [target user] that helps with [main outcome].`
-
-### Problem
-
-What repeated problem does this project address?
-
-### Desired outcome
-
-What should be easier, safer, clearer, or more repeatable after this project exists?
-
-### Non-goals
-
-What should this project explicitly avoid?
+- Hosted git platform APIs, web UI, or SaaS dashboards
+- LLM summarization of diffs
+- Cloud services or paid APIs for core analysis

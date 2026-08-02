@@ -1,45 +1,40 @@
 # Glossary
 
-## Purpose
-
-Define project-specific terms so future work uses the same language.
-
 ## Terms
+
+### Churn
+
+Lines added and removed in a diff, aggregated per file and in totals.
+
+### Hotspot
+
+A file or path with disproportionately high churn relative to the change set.
+
+### Review risk
+
+A deterministic score or ranking derived from churn, number of changed files,
+and sensitive-path heuristics (documented in product docs).
+
+### Working tree diff
+
+Uncommitted changes in a local git repository (`git diff` scope).
+
+### Commit range
+
+A sequence of commits between two refs (e.g. `main..HEAD` or explicit SHAs).
+
+### Machine report
+
+JSON output with stable field ordering suitable for CI and scripts.
 
 ### Project context
 
-The minimum information needed to understand what the project is, what phase it is in, and what constraints apply.
-
-### Idea
-
-A raw or semi-structured potential change.
-
-An idea is not yet an implementation task.
-
-### Expanded idea
-
-An idea with problem, goal, scope, risks, open questions, and possible implementation steps.
-
-### Decision log entry
-
-A lightweight record in `.ai/project/decisions.md` for confirmed project or workflow choices.
-
-### Architecture decision record (ADR)
-
-A fuller decision document in `.ai/architecture/` when the choice needs durable rationale.
+Minimum information to understand what diffstat-cli is, its phase, and constraints.
 
 ### Quality gate
 
-A check that must pass before work is considered complete.
-
-Examples:
-
-- documentation updated
-- tests pass
-- conventions followed
-- scope respected
-- generated output reviewed
+A check that must pass before work is considered complete (tests, lint, CI, docs).
 
 ### Working system
 
-The reusable `.ai/` structure that helps plan, document, and execute work consistently.
+The reusable `.ai/` structure for planning, documenting, and executing work.
