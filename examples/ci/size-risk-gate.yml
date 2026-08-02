@@ -1,0 +1,62 @@
+# Example GitHub Actions job: fail when a commit range is high review-risk.
+# Copy into a workflow and adjust --base/--head (or omit both for working tree).
+#
+# Requires git history for the compared refs (fetch-depth: 0 when using ranges).
+
+name: Diffstat size/risk gate (example)
+
+on:
+  pull_request:
+
+jobs:
+  diffstat-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install diffstat-cli
+        run: python -m pip install -e .
+
+      - name: Analyze PR range as JSON
+        id: analyze
+        run: |
+          set -euo pipefail
+          BASE="${{ github.event.pull_request.base.sha }}"
+          HEAD="${{ github.event.pull_request.head.sha }}"
+          # Exit 1 means empty diff — treat as pass for this gate.
+          set +e
+          diffstat analyze --base "$BASE" --head "$HEAD" --json > report.json
+          code=$?
+          set -e
+          if [ "$code" -eq 1 ]; then
+            echo "Empty diff; gate skipped."
+            exit 0
+          fi
+          if [ "$code" -ne 0 ]; then
+            echo "diffstat failed with exit $code" >&2
+            cat report.json >&2 || true
+            exit "$code"
+          fi
+          python - <<'PY'
+          import json
+          import sys
+          report = json.load(open("report.json", encoding="utf-8"))
+          risk = report["review_risk"]
+          totals = report["totals"]
+          print(
+              f"files={totals['files_changed']} churn={totals['total_churn']} "
+              f"risk={risk['level']} ({risk['score']}/100)"
+          )
+          # Example policy: fail on high risk. Adjust thresholds for your team.
+          if risk["level"] == "high":
+              print("Gate failed: review_risk level is high", file=sys.stderr)
+              sys.exit(1)
+          PY

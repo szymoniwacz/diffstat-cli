@@ -8,14 +8,13 @@
   gating oversized diffs
 - **Core problem:** change sets are hard to judge quickly without structured
   churn and risk metrics
-- **Current phase:** MVP implementation (bootstrap complete; first product goals
-  follow)
+- **Current phase:** MVP hardening (Phase 3 — CI quality gates and usage docs)
 - **Important constraints:** offline core analysis, deterministic output,
   scriptable UX, minimal dependencies
 
 ## Current phase
 
-MVP implementation
+MVP hardening (Phase 3)
 
 ## Working assumptions
 

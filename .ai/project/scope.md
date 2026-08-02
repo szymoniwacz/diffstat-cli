@@ -12,7 +12,8 @@ diffstat-cli.
 - Human-readable summary and JSON report output
 - Review-risk scoring from churn, file count, and sensitive-path heuristics
 - Error handling for invalid repos, ranges, and empty diffs
-- Automated tests, lint, and CI for the Python package
+- Automated tests, lint, and CI for the Python package (Phase 3)
+- CI size/risk gate example and docs (Phase 3)
 - Documentation for install, commands, and limitations
 
 ## Out of scope by default
