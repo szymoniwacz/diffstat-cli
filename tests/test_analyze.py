@@ -8,10 +8,10 @@ from pathlib import Path
 
 import pytest
 
-from diffstat.analysis import analyze, language_bucket
+from diffstat.analysis import FileChurn, analyze, language_bucket
 from diffstat.cli import main
 from diffstat.gitutil import NumstatRow, collect_numstat, resolve_repo
-from diffstat.risk import assess_risk, is_sensitive_path
+from diffstat.risk import assess_risk, is_sensitive_path, rank_files
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -163,3 +163,68 @@ def test_collect_numstat_range(git_repo: Path):
     rows = collect_numstat(git_repo, base="HEAD~1", head="HEAD")
     assert len(rows) == 1
     assert rows[0].path == "x.txt"
+
+
+def test_rank_files_sensitive_before_churn():
+    files = [
+        FileChurn(path="src/big.py", added=50, deleted=0),
+        FileChurn(path=".env", added=1, deleted=0),
+        FileChurn(path="README.md", added=10, deleted=0),
+    ]
+    ranked = rank_files(files)
+    assert [f.path for f in ranked] == [".env", "src/big.py", "README.md"]
+
+
+def test_missing_path_exits_usage(capsys: pytest.CaptureFixture[str]):
+    code = main(["analyze", "--path", "/no/such/path/for/diffstat"])
+    captured = capsys.readouterr()
+    assert code == 2
+    assert "error:" in captured.err
+
+
+def test_head_without_base_exits_usage(
+    git_repo: Path, capsys: pytest.CaptureFixture[str]
+):
+    code = main(["analyze", "--path", str(git_repo), "--head", "HEAD"])
+    captured = capsys.readouterr()
+    assert code == 2
+    assert "both --base and --head" in captured.err
+
+
+def test_identical_refs_empty_diff(
+    git_repo: Path, capsys: pytest.CaptureFixture[str]
+):
+    code = main(
+        [
+            "analyze",
+            "--path",
+            str(git_repo),
+            "--base",
+            "HEAD",
+            "--head",
+            "HEAD",
+            "--json",
+        ]
+    )
+    captured = capsys.readouterr()
+    assert code == 1
+    assert "empty diff" in captured.err
+    assert captured.out == ""
+
+
+def test_json_marks_sensitive_and_stable_file_order(
+    git_repo: Path, capsys: pytest.CaptureFixture[str]
+):
+    (git_repo / "notes.txt").write_text("n\n" * 20, encoding="utf-8")
+    (git_repo / ".env").write_text("SECRET=1\n", encoding="utf-8")
+    _git(git_repo, "add", "notes.txt", ".env")
+    code = main(["analyze", "--path", str(git_repo), "--json"])
+    captured = capsys.readouterr()
+    assert code == 0
+    payload = json.loads(captured.out)
+    assert payload["files"][0]["path"] == ".env"
+    assert payload["files"][0]["sensitive"] is True
+    assert ".env" in payload["review_risk"]["sensitive_files"]
+    # JSON reporter uses sort_keys=True for stable machine ordering.
+    assert captured.out.index('"files"') < captured.out.index('"hotspots"')
+    assert captured.out.index('"schema_version"') < captured.out.index('"tool"')

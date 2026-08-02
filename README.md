@@ -11,7 +11,8 @@ pipelines that need deterministic JSON output.
 
 ## Status
 
-Core MVP analyze command is available (roadmap Phase 2).
+Core MVP analyze command is available. Phase 3 hardening adds product CI
+(`pytest` / `ruff`) and a documented CI size/risk gate example.
 
 ## Setup
 
@@ -90,6 +91,23 @@ pytest
 ruff check src tests
 ```
 
+GitHub Actions on pull requests and `main` runs the same commands after
+installing `.[dev]`, plus the repository workflow-contract validator.
+
+## CI size/risk gate (example)
+
+Use `diffstat analyze --json` in CI to warn or fail on oversized / high-risk
+diffs. A copy-paste workflow lives at
+[`examples/ci/size-risk-gate.yml`](examples/ci/size-risk-gate.yml).
+
+Minimal pattern:
+
+```bash
+python -m pip install -e .
+diffstat analyze --base "$BASE_SHA" --head "$HEAD_SHA" --json > report.json
+# Parse review_risk.level / totals from report.json and apply your policy.
+```
+
 ## Configuration and environment variables
 
 No environment variables required. Flags only for MVP.
@@ -109,7 +127,7 @@ for contributor workflow. This README stays product-focused.
 
 - No remote git platform integration in MVP
 - Risk rules are fixed heuristics (not yet configurable)
-- Large-repo performance not yet optimized
+- Large-repo performance is not optimized; use on typical PR-sized diffs first
 
 ## License
 

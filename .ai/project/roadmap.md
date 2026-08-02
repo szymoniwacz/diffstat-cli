@@ -39,11 +39,14 @@ Outputs:
 Goal:
 Polish UX, expand edge-case coverage, and document CI usage patterns.
 
+Status: in progress (goal #6)
+
 Outputs:
 
+- Product CI runs `pytest` and `ruff check src tests` on PRs and `main`
 - Additional error-path tests and docs
 - Example CI job snippets for size/risk gates
-- Performance sanity checks on large repos
+- Performance sanity notes (no large-repo optimizer in MVP)
 
 ## Later phases
 

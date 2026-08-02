@@ -18,6 +18,9 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install package with dev dependencies
+        run: python -m pip install -e ".[dev]"
+
       - name: Validate project workflow contracts
         run: python ci/validate-workflow-contracts.py --mode project
 
@@ -32,3 +35,9 @@ jobs:
 
       - name: Run CI validation mode tests
         run: python ci/tests/test_ci_validation_mode.py
+
+      - name: Run product tests
+        run: pytest
+
+      - name: Lint product sources
+        run: ruff check src tests
