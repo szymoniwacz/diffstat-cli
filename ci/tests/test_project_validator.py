@@ -51,6 +51,36 @@ pytest
 ```
 """
 
+TEMPLATE_VISION = """> REPLACE DURING BOOTSTRAP: replace this template with the project's actual vision.
+
+## Purpose
+
+Describe what the project is meant to become.
+"""
+
+TEMPLATE_README = """# AI Project Template
+
+A documentation-first GitHub template for building software with explicit
+context, scoped changes, and human-controlled review.
+
+Use this repository as a starting point, then replace template content with
+your product documentation during bootstrap.
+"""
+
+TEMPLATE_AGENTS = """# Agent Instructions
+
+This is a documentation-first AI workflow template. It is not an application.
+"""
+
+PLACEHOLDER_STACK_PROFILE = """# Placeholder Stack Profile
+
+## Common commands (placeholders)
+
+```bash
+python -m <package> --help
+```
+"""
+
 
 def build_valid_requirements(root: Path) -> None:
     areas = load_decision_areas(root)
@@ -93,6 +123,13 @@ def bootstrap_valid_project(root: Path) -> None:
     copy_template_skeleton(root)
     shutil.copytree(ROOT / ".ai", root / ".ai", dirs_exist_ok=True)
     shutil.copytree(ROOT / "examples", root / "examples", dirs_exist_ok=True)
+    artifact_ignore = shutil.ignore_patterns("__pycache__", "*.pyc", "*.egg-info")
+    if (ROOT / "src").is_dir():
+        shutil.copytree(ROOT / "src", root / "src", dirs_exist_ok=True, ignore=artifact_ignore)
+    if (ROOT / "tests").is_dir():
+        shutil.copytree(ROOT / "tests", root / "tests", dirs_exist_ok=True, ignore=artifact_ignore)
+    if (ROOT / "pyproject.toml").is_file():
+        shutil.copy(ROOT / "pyproject.toml", root / "pyproject.toml")
     for rel in (
         "ci/validate-workflow-contracts.py",
         ".github/PULL_REQUEST_TEMPLATE/template-maintenance.md",
@@ -168,10 +205,7 @@ def test_unchanged_template_vision_fails() -> None:
         root = Path(tmp)
         bootstrap_valid_project(root)
         vision = root / ".ai/project/vision.md"
-        vision.write_text(
-            (ROOT / ".ai/project/vision.md").read_text(encoding="utf-8"),
-            encoding="utf-8",
-        )
+        vision.write_text(TEMPLATE_VISION, encoding="utf-8")
         result = run_validator(root, "project")
         assert result.returncode != 0
         assert ".ai/project/vision.md" in result.stderr
@@ -346,12 +380,13 @@ def test_placeholder_commands_in_stack_profile_fails() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
         bootstrap_valid_project(root)
-        shutil.copy(ROOT / ".ai/stack-profiles/python-cli.md", root / ".ai/stack-profiles/python-cli.md")
+        placeholder_profile = root / ".ai/stack-profiles/placeholder-cli.md"
+        placeholder_profile.write_text(PLACEHOLDER_STACK_PROFILE, encoding="utf-8")
         req = root / ".ai/docs/project-requirements.md"
         req.write_text(
             req.read_text(encoding="utf-8").replace(
                 ".ai/stack-profiles/numbat-cli.md",
-                ".ai/stack-profiles/python-cli.md",
+                ".ai/stack-profiles/placeholder-cli.md",
             ),
             encoding="utf-8",
         )
@@ -617,7 +652,7 @@ def test_template_readme_identity_fails() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
         bootstrap_valid_project(root)
-        (root / "README.md").write_text((ROOT / "README.md").read_text(encoding="utf-8"), encoding="utf-8")
+        (root / "README.md").write_text(TEMPLATE_README, encoding="utf-8")
         result = run_validator(root, "project")
         assert result.returncode != 0
         assert "template identity" in result.stderr
@@ -627,7 +662,7 @@ def test_template_agents_identity_fails() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
         bootstrap_valid_project(root)
-        (root / "AGENTS.md").write_text((ROOT / "AGENTS.md").read_text(encoding="utf-8"), encoding="utf-8")
+        (root / "AGENTS.md").write_text(TEMPLATE_AGENTS, encoding="utf-8")
         result = run_validator(root, "project")
         assert result.returncode != 0
         assert "template-only identity" in result.stderr

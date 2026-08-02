@@ -1,42 +1,41 @@
 # Python CLI Stack Profile
 
-Stack-specific guidance for AI-assisted work. Global workflow rules still apply.
+Stack-specific guidance for diffstat-cli. Global workflow rules still apply.
 
 ## Common structure
 
 ```txt
-src/<package_name>/
+src/diffstat/
 tests/
-pyproject.toml or setup.cfg
+pyproject.toml
 README.md
 ```
 
-Document entry points and CLI layout in `.ai/docs/` if non-standard.
-
-## Common commands (placeholders)
-
-Replace with project-defined commands:
+## Project commands
 
 ```bash
-pip install -e ".[dev]"
+python -m pip install -e ".[dev]"
 pytest
-ruff check .
-mypy .
-python -m <package> --help
+ruff check src tests
+diffstat --help
 ```
 
-Do not invent commands that are not set up in the project.
+Optional when mypy is installed:
+
+```bash
+mypy src
+```
 
 ## Testing expectations
 
 - Unit tests for changed modules
-- CLI tests for new flags or commands (e.g. `pytest` with runner helpers)
+- CLI tests for new flags or commands
 - Snapshot tests only when stable output is intentional
 
 ## Documentation expectations
 
 - Update CLI help text and README when commands change
-- Document config files and environment variables in `.ai/docs/` or project README
+- Document config and flags in README or `.ai/docs/`
 
 ## AI-specific risks
 

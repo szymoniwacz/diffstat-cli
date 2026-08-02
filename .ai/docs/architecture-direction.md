@@ -1,51 +1,31 @@
 # Architecture Direction
 
-## Purpose
+## System shape
 
-Describe the intended architecture before implementation starts.
+Local-first Python CLI (`diffstat`) that shells out to or invokes `git` for diff
+data, parses churn statistics, applies deterministic review-risk heuristics, and
+formats text or JSON reports.
 
-This file should not contain final code decisions too early.
-It should describe direction, constraints, and boundaries.
+## Main boundaries
 
-## Recommended sections
+| Component | Responsibility |
+|---|---|
+| CLI layer | Argument parsing, exit codes, stdout/stderr contracts |
+| Git adapter | Resolve repo, ranges, and raw diff stats from local git |
+| Analysis | Aggregate churn, hotspots, per-file breakdown |
+| Risk engine | Deterministic score from churn, file count, path heuristics |
+| Reporters | Human text and JSON serializers with stable ordering |
 
-### System shape
+## Design principles
 
-What kind of system is this?
+- Simple first version: one primary analyze command path
+- Explicit boundaries between git IO, analysis, and output
+- Deterministic core: stable sort order in text and JSON
+- Small reviewable changes per goal
+- No network calls in core analysis path
 
-Examples:
+## Open questions
 
-- CLI tool
-- web application
-- library
-- internal automation
-- API service
-
-### Main boundaries
-
-What responsibilities should stay separated?
-
-Examples:
-
-- input parsing
-- domain logic
-- persistence
-- external integrations
-- reporting
-- user interface
-
-### Design principles
-
-Use project-specific principles.
-
-Default principles:
-
-- simple first version
-- explicit boundaries
-- deterministic core where possible
-- small reviewable changes
-- documentation stays close to design decisions
-
-### Open questions
-
-List architecture questions that are not decided yet.
+- Exact sensitive-path heuristic list (define during MVP implementation goal)
+- Whether to use `git` subprocess only vs. a thin library wrapper (prefer
+  subprocess for minimal deps unless library clearly wins)

@@ -2,27 +2,27 @@
 
 ## Purpose
 
-Define what is currently allowed and what is intentionally deferred.
-
-This file protects the project from uncontrolled expansion.
+Define what is currently allowed and what is intentionally deferred for
+diffstat-cli.
 
 ## In scope now
 
-> REPLACE DURING BOOTSTRAP: list what this project is currently allowed to work on.
-
-- [in-scope area]
-- [in-scope area]
+- Bootstrap and project readiness (completed via goal #2)
+- Local git diff analysis CLI (`diffstat` command)
+- Human-readable summary and JSON report output
+- Review-risk scoring from churn, file count, and sensitive-path heuristics
+- Error handling for invalid repos, ranges, and empty diffs
+- Automated tests, lint, and CI for the Python package
+- Documentation for install, commands, and limitations
 
 ## Out of scope by default
 
-- work that does not satisfy the required preparation for its change type
-- large rewrites without explicit approval
-- new frameworks without a decision record
-- hidden architecture changes
-- undocumented generated files
-
-Required preparation by change type lives in
-`.ai/quality/definition-of-ready.md` and `.ai/policies/no-blind-coding.md`.
+- Hosted git platform API integrations
+- Web UI, SaaS, or desktop applications
+- LLM or AI summarization
+- Network calls required for core analysis
+- Large rewrites without explicit approval
+- New frameworks without a decision record
 
 ## Scope levels
 
